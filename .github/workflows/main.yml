@@ -24,8 +24,9 @@ jobs:
 
      - name: Push Docker image to Vultr
        run: |
-         ssh -o StrictHostKeyChecking=no root@141.164.55.202 "
-         docker stop bookreader-back || true &&
-         docker rm bookreader-back || true &&
-         docker pull bookreader-back &&
+         ssh -o StrictHostKeyChecking=no root@141.164.55.202 << 'EOF'
+         docker stop bookreader-back || true
+         docker rm bookreader-back || true
+         docker pull bookreader-back
          docker run -d --name bookreader-back -p 8080:8080 bookreader-back
+         EOF
