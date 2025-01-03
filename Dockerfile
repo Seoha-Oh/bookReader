@@ -2,9 +2,12 @@
 FROM gradle:7.6-jdk17 AS build
 WORKDIR /app
 
-# Gradle 캐시를 위한 설정
+# Gradle Wrapper 복사
+COPY gradlew /app/
+RUN chmod +x gradlew
+
+# Gradle 관련 파일 복사
 COPY gradle /app/gradle
-COPY gradlew /app/gradlew
 COPY build.gradle /app/build.gradle
 COPY settings.gradle /app/settings.gradle
 
