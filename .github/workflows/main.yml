@@ -20,7 +20,7 @@ jobs:
 
      - name: Build Docker image
        run: |
-         docker build -t bookreader-back .
+         docker build -t bookreader-back -f Dockerfile .
 
      - name: Push Docker image to Vultr
        run: |
