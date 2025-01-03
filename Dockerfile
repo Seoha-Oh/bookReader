@@ -3,7 +3,7 @@ FROM gradle:7.6-jdk17 AS build
 WORKDIR /app
 
 # Gradle Wrapper 파일 복사 및 실행 권한 부여
-COPY gradlew /app/gradlew
+COPY gradlew /app/
 RUN chmod +x /app/gradlew
 
 # Gradle 관련 설정 파일 복사
