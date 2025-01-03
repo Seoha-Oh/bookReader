@@ -1,32 +1,41 @@
 name: Deploy to Vultr
 
 on:
- push:
-   branches:
-     - develop
+  push:
+    branches:
+      - develop
 
 jobs:
- deploy:
-   runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-   steps:
-     - name: Checkout code
-       uses: actions/checkout@v3
+    steps:
+      # 코드를 체크아웃
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-     - name: Set up SSH
-       uses: webfactory/ssh-agent@v0.5.3
-       with:
-         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # SSH 에이전트 설정
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-     - name: Build Docker image
-       run: |
-         docker build -t bookreader-back -f Dockerfile .
+      # Docker Hub에 로그인
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-     - name: Push Docker image to Vultr
-       run: |
-         ssh -o StrictHostKeyChecking=no root@141.164.55.202 << 'EOF'
-         docker stop bookreader-back || true
-         docker rm bookreader-back || true
-         docker pull bookreader-back
-         docker run -d --name bookreader-back -p 8080:8080 bookreader-back
-         EOF
+      # Docker 이미지를 빌드하고 Docker Hub에 푸시
+      - name: Build and Push Docker image
+        run: |
+          docker build -t your-dockerhub-username/bookreader-back:latest -f Dockerfile .
+          docker push your-dockerhub-username/bookreader-back:latest
+
+      # Vultr 서버에 배포
+      - name: Deploy on Vultr
+        run: |
+          ssh -o StrictHostKeyChecking=no root@141.164.55.202 << 'EOF'
+          docker stop bookreader-back || true
+          docker rm bookreader-back || true
+          docker pull your-dockerhub-username/bookreader-back:latest
+          docker run -d --name bookreader-back -p 8080:8080 your-dockerhub-username/bookreader-back:latest
+          EOF
