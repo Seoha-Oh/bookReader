@@ -1,35 +1,54 @@
-name: Deploy to Vultr
+#name: Deploy to Vultr
+#
+#on:
+#  push:
+#    branches:
+#      - develop
+#
+#permissions:
+#  contents: write
+#  packages: write
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Set up SSH
+#        uses: webfactory/ssh-agent@v0.5.3
+#        with:
+#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      - name: Build Docker image
+#        run: |
+#          docker build -t bookreader-back .
+#
+#      - name: Push Docker image to Vultr
+#        run: |
+#          ssh -o StrictHostKeyChecking=no root@141.164.55.202 "
+#          docker stop bookreader-back || true &&
+#          docker rm bookreader-back || true &&
+#          docker pull bookreader-back &&
+#          docker run -d --name bookreader-back -p 8080:8080 bookreader-back
+
+name: Deploy Test
 
 on:
-  push:
-    branches:
-      - develop
-
-permissions:
-  contents: write
-  packages: write
+  workflow_dispatch: # 수동 실행을 활성화
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Print Hello World
+        run: echo "Hello, World!"
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Check current directory
+        run: ls -al
 
-      - name: Build Docker image
-        run: |
-          docker build -t bookreader-back .
-
-      - name: Push Docker image to Vultr
-        run: |
-          ssh -o StrictHostKeyChecking=no root@141.164.55.202 "
-          docker stop bookreader-back || true &&
-          docker rm bookreader-back || true &&
-          docker pull bookreader-back &&
-          docker run -d --name bookreader-back -p 8080:8080 bookreader-back
+      - name: Test Docker version
+        run: docker --version
