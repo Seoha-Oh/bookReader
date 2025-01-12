@@ -21,7 +21,7 @@ spring:
 #    password:
 #    initialization-mode: always  # 초기 데이터베이스 스크립트 실행
   datasource:
-    url: jdbc:mysql://141.164.55.202:3306/bookreader?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://mysql-container:3306/bookreader?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: bookreader
     password: qwer1234
     driver-class-name: com.mysql.cj.jdbc.Driver
